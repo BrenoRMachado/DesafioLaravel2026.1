@@ -19,6 +19,11 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->boolean('is_admin')->default(false);
+            $table->date('birthdate');
+            $table->string('cpf')->unique();
+            $table->decimal('saldo', 10, 2)->default(0);
+            $table->string('profile_picture')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
