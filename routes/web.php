@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,10 @@ Route::get('/dashboard', function () {
 Route::get('/dashboardAdmin', function () {
     return view('dashboardAdmin');
 })->middleware(AdminMiddleware::class)->name('dashboardAdmin');
+
+Route::get('/users', [UserController::class, 'index'])->middleware(AdminMiddleware::class)->name('users');
+
+Route::post('/users', [UserController::class, 'store'])->middleware(AdminMiddleware::class)->name('users.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
