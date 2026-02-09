@@ -23,6 +23,8 @@ Route::post('/users', [UserController::class, 'store'])->middleware(AdminMiddlew
 
 Route::put('/users/{user}', [UserController::class, 'update'])->middleware(AdminMiddleware::class)->name('users.update');
 
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->middleware(AdminMiddleware::class)->name('users.destroy');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

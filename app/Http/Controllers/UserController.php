@@ -60,4 +60,10 @@ class UserController extends Controller
 
         return redirect()->route('users')->with('success', 'Usuário atualizado com sucesso!');
     }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return redirect()->route('users')->with('success', 'Usuário deletado com sucesso!');
+    }
 }
