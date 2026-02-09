@@ -199,6 +199,19 @@
     </div>
 
     <script>
+        // Build a JS map of users present on this page so modals don't need an API endpoint
+        const usersData = {};
+        @foreach($users as $user)
+            usersData[{{ $user->id }}] = {!! json_encode([
+                'name' => $user->name,
+                'email' => $user->email,
+                'birthdate' => $user->birthdate,
+                'cpf' => $user->cpf,
+                'saldo' => $user->saldo,
+                'profile_picture' => $user->profile_picture ?? null,
+            ]) !!};
+        @endforeach
+
         // Modal Criar
         function openCreateModal(e) {
             e.preventDefault();
@@ -210,44 +223,42 @@
             document.getElementById('createForm').reset();
         }
 
-        // Modal Ver
+        // Modal Ver (usa dados já carregados na página)
         function openViewModal(e, userId) {
             e.preventDefault();
+            const data = usersData[userId];
+            if (!data) {
+                console.error('Usuário não encontrado nos dados da página:', userId);
+                return;
+            }
+            document.getElementById('viewName').value = data.name;
+            document.getElementById('viewEmail').value = data.email;
+            document.getElementById('viewBirthdate').value = data.birthdate;
+            document.getElementById('viewCpf').value = data.cpf;
+            document.getElementById('viewSaldo').value = data.saldo;
             document.getElementById('viewModal').classList.remove('hidden');
-            // Carregar dados do usuário via AJAX
-            fetch(`/api/usuarios/${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('viewName').value = data.name;
-                    document.getElementById('viewEmail').value = data.email;
-                    document.getElementById('viewBirthdate').value = data.birthdate;
-                    document.getElementById('viewCpf').value = data.cpf;
-                    document.getElementById('viewSaldo').value = data.saldo;
-                })
-                .catch(error => console.error('Erro:', error));
         }
 
         function closeViewModal() {
             document.getElementById('viewModal').classList.add('hidden');
         }
 
-        // Modal Editar
+        // Modal Editar (usa dados já carregados na página)
         function openEditModal(e, userId) {
             e.preventDefault();
+            const data = usersData[userId];
+            if (!data) {
+                console.error('Usuário não encontrado nos dados da página:', userId);
+                return;
+            }
+            document.getElementById('editForm').action = `/users/${userId}`;
+            document.getElementById('editName').value = data.name;
+            document.getElementById('editEmail').value = data.email;
+            document.getElementById('editBirthdate').value = data.birthdate;
+            document.getElementById('editCpf').value = data.cpf;
+            document.getElementById('editSaldo').value = data.saldo;
+            // Note: file inputs cannot be prefilled for security reasons
             document.getElementById('editModal').classList.remove('hidden');
-            document.getElementById('editForm').action = `/usuarios/${userId}`;
-            // Carregar dados do usuário via AJAX
-            fetch(`/api/usuarios/${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('editName').value = data.name;
-                    document.getElementById('editEmail').value = data.email;
-                    document.getElementById('editBirthdate').value = data.birthdate;
-                    document.getElementById('editCpf').value = data.cpf;
-                    document.getElementById('editSaldo').value = data.saldo;
-                    document.getElementById('editIsAdmin').checked = data.is_admin ? true : false;
-                })
-                .catch(error => console.error('Erro:', error));
         }
 
         function closeEditModal() {
@@ -258,7 +269,7 @@
         function openDeleteModal(e, userId) {
             e.preventDefault();
             document.getElementById('deleteModal').classList.remove('hidden');
-            document.getElementById('deleteForm').action = `/usuarios/${userId}`;
+            document.getElementById('deleteForm').action = `/users/${userId}`;
         }
 
         function closeDeleteModal() {

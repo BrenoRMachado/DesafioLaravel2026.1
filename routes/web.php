@@ -21,6 +21,8 @@ Route::get('/users', [UserController::class, 'index'])->middleware(AdminMiddlewa
 
 Route::post('/users', [UserController::class, 'store'])->middleware(AdminMiddleware::class)->name('users.store');
 
+Route::put('/users/{user}', [UserController::class, 'update'])->middleware(AdminMiddleware::class)->name('users.update');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

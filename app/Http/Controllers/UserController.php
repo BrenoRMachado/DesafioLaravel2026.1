@@ -37,4 +37,27 @@ class UserController extends Controller
 
         return redirect()->route('users')->with('success', 'Usuário criado com sucesso!');
     }
+
+    public function update(Request $request, User $user)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8',
+            'birthdate' => 'required|date',
+            'cpf' => 'required|string|unique:users,cpf,' . $user->id,
+            'saldo' => 'required|numeric|min:0',
+        ]);
+
+        $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => isset($data['password']) ? Hash::make($data['password']) : $user->password,
+            'birthdate' => $data['birthdate'],
+            'cpf' => $data['cpf'],
+            'saldo' => $data['saldo'],
+        ]);
+
+        return redirect()->route('users')->with('success', 'Usuário atualizado com sucesso!');
+    }
 }
