@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Gerenciamento de Usuários') }}
+            {{ __('Gerenciamento de Administradores') }}
         </h2>
     </x-slot>
 
@@ -20,7 +20,7 @@
         @endif
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex justify-between items-center mb-6">
-                <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">Lista de Usuários</h1>
+                <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">Lista de Administradores</h1>
                 <a href="#" onclick="openCreateModal(event)" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">Criar Novo Usuário</a>
             </div>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -70,7 +70,7 @@
                     </svg>
                 </button>
             </div>
-            <form id="createForm" action="/users" method="POST">
+            <form id="createForm" action="/admins" method="POST">
                 @csrf
                 <div class="mb-4">
                     <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Nome</label>
@@ -152,7 +152,7 @@
                     </svg>
                 </button>
             </div>
-            <form id="editForm" action="/users" method="POST">
+            <form id="editForm" action="/admins" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="mb-4">
@@ -263,7 +263,7 @@
                 console.error('Usuário não encontrado nos dados da página:', userId);
                 return;
             }
-            document.getElementById('editForm').action = `/users/${userId}`;
+            document.getElementById('editForm').action = `/admins/${userId}`;
             document.getElementById('editName').value = data.name;
             document.getElementById('editEmail').value = data.email;
             document.getElementById('editBirthdate').value = data.birthdate;
@@ -281,7 +281,7 @@
         function openDeleteModal(e, userId) {
             e.preventDefault();
             document.getElementById('deleteModal').classList.remove('hidden');
-            document.getElementById('deleteForm').action = `/users/${userId}`;
+            document.getElementById('deleteForm').action = `/admins/${userId}`;
         }
 
         function closeDeleteModal() {
