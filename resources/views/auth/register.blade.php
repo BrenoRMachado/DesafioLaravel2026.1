@@ -3,6 +3,9 @@
         <h1 class="text-4xl font-black tracking-widest" style="color: #FFCA06;">
             E-COMMERCE
         </h1>
+        <p class="text-xl font-bold uppercase tracking-wide mt-1" style="color: #E8675C;">
+            Cadastro
+        </p>
     </div>
 
     <form method="POST" action="{{ route('register') }}">
