@@ -22,7 +22,7 @@ class ProdutoController extends Controller
             ->when($categoriaSelecionada, function ($query, $categoriaSelecionada) {
                 return $query->where('categoria', $categoriaSelecionada);
             })
-            ->paginate(10)
+            ->paginate(9)
             ->withQueryString();
 
         if ($request->is('produtos*')) {

@@ -64,10 +64,20 @@
 
                                     @auth
                                         @if(!auth()->user()->is_admin) 
-                                            <button class="flex-1 text-white px-4 py-2 rounded text-sm font-bold transition hover:opacity-90" 
-                                                    style="background-color: #c91b7a;">
-                                                Comprar
-                                            </button>
+                                            <form action="{{ route('checkout') }}" method="POST" class="flex-1" target="_blank">
+                                                @csrf
+                                                <input type="hidden" name="produto" value="{{ json_encode([
+                                                    'id' => $produto->id,
+                                                    'nome' => $produto->nome,
+                                                    'preco' => $produto->preco,
+                                                    'quantidade' => 1
+                                                ]) }}">
+                                                
+                                                <button type="submit" class="w-full text-white px-4 py-2 rounded text-sm font-bold transition hover:opacity-90" 
+                                                        style="background-color: #c91b7a;">
+                                                    Comprar
+                                                </button>
+                                            </form>
                                         @endif
                                     @endauth
                                 </div>

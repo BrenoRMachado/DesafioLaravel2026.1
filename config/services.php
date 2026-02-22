@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'pagseguro' => [
+        'token' => env('PAGSEGURO_TOKEN'),
+        'env' => env('PAGSEGURO_ENV'),
+        'url_checkout' => env('PAGSEGURO_URL_CHECKOUT'),
+    ],
+
 ];

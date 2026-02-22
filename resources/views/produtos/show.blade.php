@@ -3,8 +3,12 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-[#2f1c37] overflow-hidden shadow-sm sm:rounded-lg p-8 flex flex-col md:flex-row gap-8">
                 
-                <div class="w-full md:w-1/2 bg-[#482b52] rounded-xl flex items-center justify-center h-96">
-                    <img class="w-full h-full object-contain" src="{{ '/storage/' . $produto->foto }}" alt="foto"/>
+                <div class="w-full md:w-1/2 bg-[#482b52] rounded-xl flex items-center justify-center h-96 overflow-hidden">
+                    @if($produto->foto)
+                        <img class="w-full h-full object-contain" src="{{ asset('storage/' . $produto->foto) }}" alt="{{ $produto->nome }}"/>
+                    @else
+                        <div class="text-gray-400">Sem foto</div>
+                    @endif
                 </div>
 
                 <div class="w-full md:w-1/2 flex flex-col justify-between">
@@ -25,11 +29,27 @@
                     </div>
 
                     <div class="mt-8">
-                        @if(!auth()->user()->is_admin)
-                            <button class="w-full bg-[#c91b7a] text-white font-bold py-4 rounded-lg hover:opacity-90 transition">
-                                Comprar Agora
-                            </button>
-                        @endif
+                        @auth
+                            @if(!auth()->user()->is_admin)
+                                <form action="{{ route('checkout') }}" method="POST" target="_blank">
+                                    @csrf
+                                    <input type="hidden" name="produto" value="{{ json_encode([
+                                        'id' => $produto->id,
+                                        'nome' => $produto->nome,
+                                        'preco' => $produto->preco,
+                                        'quantidade' => 1
+                                    ]) }}">
+                                    
+                                    <button type="submit" class="w-full bg-[#c91b7a] text-white font-bold py-4 rounded-lg hover:opacity-90 transition">
+                                        Comprar Agora
+                                    </button>
+                                </form>
+                            @endif
+                        @else
+                            <a href="{{ route('login') }}" class="block w-full bg-[#c91b7a] text-center text-white font-bold py-4 rounded-lg hover:opacity-90 transition">
+                                Entre para Comprar
+                            </a>
+                        @endauth
                         
                         <a href="{{ route('home') }}" class="block text-center text-white mt-4 hover:underline transition">
                             Voltar
