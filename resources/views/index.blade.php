@@ -33,6 +33,36 @@
                             </div>
                         @endforeach
                     </div>
+                    <div class="mt-6 pb-1 flex justify-center pagination-custom">
+                        {{ $produtos->links() }}
+                    </div>
+                        <style>
+                            .pagination-custom nav div:first-child {
+                                display: none !important;
+                            }
+
+                            .pagination-custom nav div:last-child {
+                                display: flex !important;
+                                justify-content: center !important;
+                                width: 100% !important;
+                            }
+
+                            .pagination-custom span, .pagination-custom a {
+                                background-color: #472652 !important; 
+                                border-color: #4c2e57 !important; 
+                                color: white !important;
+                            }
+
+                            .pagination-custom span[aria-current="page"] span {
+                                background-color: #e7675c !important;
+                                color: white !important;
+                                border-color: #e7675c !important;
+                            }
+
+                            .pagination-custom a:hover {
+                                background-color: #4c2e57 !important;
+                            }
+                        </style>
                 </div>
             </div>
         </div>
