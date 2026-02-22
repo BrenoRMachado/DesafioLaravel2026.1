@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models; // CORREÇÃO: Removido o "App\" extra
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,10 +17,10 @@ class Produto extends Model
         'descricao', 
         'categoria', 
         'data_criacao', 
-        'usuario_id',
+        'usuario_id', 
     ];
 
-   public function vendedor()
+    public function vendedor()
     {
         return $this->belongsTo(User::class, 'usuario_id');
     } 

@@ -15,8 +15,6 @@ class ProdutoController extends Controller
         
         $categorias = Produto::select('categoria')->distinct()->pluck('categoria');
 
-        // Se a rota for a de administração, usamos uma view; se for a home, outra.
-        // Vou assumir que você vai usar a rota 'produtos.index' para o gerenciamento.
         $produtos = Produto::query()
             ->when($search, function ($query, $search) {
                 return $query->where('nome', 'like', "%{$search}%");
@@ -24,10 +22,9 @@ class ProdutoController extends Controller
             ->when($categoriaSelecionada, function ($query, $categoriaSelecionada) {
                 return $query->where('categoria', $categoriaSelecionada);
             })
-            ->paginate(9)
+            ->paginate(10)
             ->withQueryString();
 
-        // Verifica se a URL contém 'admin' ou se você prefere separar por nome de rota
         if ($request->is('produtos*')) {
             return view('produtos', compact('produtos', 'categorias'));
         }
@@ -43,15 +40,15 @@ class ProdutoController extends Controller
             'quantidade' => 'required|integer|min:0',
             'descricao' => 'required|string',
             'categoria' => 'required|string',
-            'data_criacao' => 'required|date',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        $data['usuario_id'] = auth()->id();
+        $data['data_criacao'] = now(); 
 
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('produtos', 'public');
         }
-
-        $data['usuario_id'] = auth()->id();
 
         Produto::create($data);
 
@@ -70,7 +67,6 @@ class ProdutoController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            // Deleta a foto antiga se existir
             if ($produto->foto) {
                 Storage::disk('public')->delete($produto->foto);
             }

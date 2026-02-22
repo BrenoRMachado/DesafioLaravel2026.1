@@ -45,7 +45,7 @@
                                     <img src="{{ $produto->foto ? asset('storage/' . $produto->foto) : 'https://via.placeholder.com/40' }}" class="w-10 h-10 rounded object-cover border border-[#482b52]">
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-white">{{ $produto->nome }}</td>
-                                <td class="px-6 py-4 whitespace-no-wrap text-white">{{ $produto->categoria }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-white font-medium">{{ $produto->categoria }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-[#ffca06] font-bold">R$ {{ number_format($produto->preco, 2, ',', '.') }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-white">
                                     <span class="{{ $produto->quantidade < 5 ? 'text-red-500 font-bold' : '' }}">
@@ -61,6 +61,7 @@
                             @endforeach
                         </tbody>
                     </table>
+
                     <div class="mt-4 px-4 py-3 border-t border-[#482b52] flex items-center justify-between">
                         <div class="text-sm text-white font-medium">
                             Mostrando <span class="font-bold text-white">{{ $produtos->firstItem() }}</span> 
@@ -71,12 +72,6 @@
                             {{ $produtos->links() }}
                         </div>
                     </div>
-                    <style>
-                        .pagination-codevolt nav span[aria-current="page"] span { background-color: #e8675c; border-color: #e8675c; color: white; font-weight: bold; }
-                        .pagination-codevolt nav a, .pagination-codevolt nav span { background-color: #2f1c37; color: white; border-color: #482b52; }
-                        .pagination-codevolt nav a:hover { background-color: #482b52; color: #ffca06; }
-                        .pagination-codevolt nav div:first-child p { display: none; }
-                    </style>
                 </div>
             </div>
         </div>
@@ -99,32 +94,28 @@
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label class="block text-gray-300 text-sm font-bold mb-2">Preço</label>
-                        <input type="number" name="preco" step="0.01" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        <input type="number" name="preco" step="0.01" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md text-white">
                     </div>
                     <div>
                         <label class="block text-gray-300 text-sm font-bold mb-2">Quantidade</label>
-                        <input type="number" name="quantidade" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        <input type="number" name="quantidade" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md text-white">
                     </div>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-300 text-sm font-bold mb-2">Categoria</label>
-                    <input type="text" name="categoria" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    <input type="text" name="categoria" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md text-white">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-300 text-sm font-bold mb-2">Descrição</label>
-                    <textarea name="descricao" required rows="3" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Data de Criação</label>
-                    <input type="date" name="data_criacao" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    <textarea name="descricao" required rows="3" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md text-white"></textarea>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-300 text-sm font-bold mb-2">Foto do Produto</label>
-                    <input type="file" name="foto" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-[#482b52] file:text-white hover:file:bg-[#5a3666]">
+                    <input type="file" name="foto" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-[#482b52] file:text-white hover:file:bg-[#5a3666] cursor-pointer">
                 </div>
                 <div class="flex justify-end gap-3 pt-4">
-                    <button type="button" onclick="closeCreateModal()" class="px-4 py-2 text-white bg-[#482b52] rounded-md hover:bg-[#5a3666] transition font-bold">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-[#c91b7a] text-white font-bold rounded-md hover:bg-[#a11562] transition shadow-lg">Salvar Produto</button>
+                    <button type="button" onclick="closeCreateModal()" class="px-4 py-2 text-white bg-[#482b52] rounded-md font-bold">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-[#c91b7a] text-white font-bold rounded-md hover:bg-[#a11562] shadow-lg">Salvar Produto</button>
                 </div>
             </form>
         </div>
@@ -139,9 +130,13 @@
                 </button>
             </div>
             <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-400 text-xs font-bold mb-1 uppercase">Cadastrado por</label>
+                    <input type="text" id="viewVendedor" readonly class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-gray-300 cursor-not-allowed">
+                </div>
                 <div><label class="block text-gray-400 text-xs font-bold mb-1 uppercase">Nome</label><input type="text" id="viewNome" readonly class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-gray-300"></div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label class="block text-gray-400 text-xs font-bold mb-1 uppercase">Preço</label><input type="text" id="viewPreco" readonly class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-[#ffca06]"></div>
+                    <div><label class="block text-gray-400 text-xs font-bold mb-1 uppercase">Preço</label><input type="text" id="viewPreco" readonly class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-[#ffca06] font-bold"></div>
                     <div><label class="block text-gray-400 text-xs font-bold mb-1 uppercase">Estoque</label><input type="text" id="viewQuantidade" readonly class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-white"></div>
                 </div>
                 <div><label class="block text-gray-400 text-xs font-bold mb-1 uppercase">Descrição</label><textarea id="viewDescricao" readonly rows="3" class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-gray-300"></textarea></div>
@@ -161,17 +156,20 @@
                 </button>
             </div>
             <form id="editForm" action="" method="POST" enctype="multipart/form-data">
-                @csrf 
-                @method('PUT')
+                @csrf @method('PUT')
                 
                 <div class="mb-4">
+                    <p class="text-xs text-gray-400 uppercase font-bold">Responsável: <span id="editVendedorLabel" class="text-white"></span></p>
+                </div>
+
+                <div class="mb-4">
                     <label class="block text-gray-300 text-sm font-bold mb-2">Nome</label>
-                    <input type="text" name="nome" id="editNome" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md text-white focus:border-[#c91b7a] focus:outline-none">
+                    <input type="text" name="nome" id="editNome" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md text-white">
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-gray-300 text-sm font-bold mb-2">Categoria</label>
-                    <input type="text" name="categoria" id="editCategoria" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md text-white focus:border-[#c91b7a] focus:outline-none">
+                    <input type="text" name="categoria" id="editCategoria" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md text-white">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-4">
@@ -187,7 +185,7 @@
 
                 <div class="mb-4">
                     <label class="block text-gray-300 text-sm font-bold mb-2">Descrição</label>
-                    <textarea name="descricao" id="editDescricao" rows="3" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md text-white focus:border-[#c91b7a] focus:outline-none"></textarea>
+                    <textarea name="descricao" id="editDescricao" rows="3" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md text-white"></textarea>
                 </div>
 
                 <div class="mb-6">
@@ -196,8 +194,8 @@
                 </div>
 
                 <div class="flex justify-end gap-3">
-                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-white bg-[#482b52] rounded-md hover:bg-[#5a3666] font-bold">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-[#c91b7a] text-white font-bold rounded-md hover:bg-[#a11562] shadow-lg">Atualizar</button>
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-white bg-[#482b52] rounded-md font-bold">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-[#c91b7a] text-white font-bold rounded-md hover:bg-[#a11562]">Atualizar</button>
                 </div>
             </form>
         </div>
@@ -220,7 +218,7 @@
                 'quantidade' => $produto->quantidade,
                 'descricao' => $produto->descricao,
                 'categoria' => $produto->categoria,
-                'data_criacao' => $produto->data_criacao,
+                'vendedor' => $produto->vendedor->name ?? 'Desconhecido',
             ]) !!};
         @endforeach
 
@@ -229,6 +227,7 @@
 
         function openViewModal(e, id) {
             e.preventDefault(); const data = produtosData[id]; if (!data) return;
+            document.getElementById('viewVendedor').value = data.vendedor;
             document.getElementById('viewNome').value = data.nome;
             document.getElementById('viewPreco').value = 'R$ ' + parseFloat(data.preco).toLocaleString('pt-br', {minimumFractionDigits: 2});
             document.getElementById('viewQuantidade').value = data.quantidade + ' un.';
@@ -243,6 +242,7 @@
             if (!data) return;
             
             document.getElementById('editForm').action = `/produtos/${id}`;
+            document.getElementById('editVendedorLabel').innerText = data.vendedor;
             document.getElementById('editNome').value = data.nome;
             document.getElementById('editCategoria').value = data.categoria; 
             document.getElementById('editPreco').value = data.preco;
@@ -266,4 +266,11 @@
             if (event.target === document.getElementById('deleteModal')) closeDeleteModal();
         }
     </script>
+
+    <style>
+        .pagination-codevolt nav span[aria-current="page"] span { background-color: #e8675c; border-color: #e8675c; color: white; font-weight: bold; }
+        .pagination-codevolt nav a, .pagination-codevolt nav span { background-color: #2f1c37; color: white; border-color: #482b52; }
+        .pagination-codevolt nav a:hover { background-color: #482b52; color: #ffca06; }
+        .pagination-codevolt nav div:first-child p { display: none; }
+    </style>
 </x-app-layout>
