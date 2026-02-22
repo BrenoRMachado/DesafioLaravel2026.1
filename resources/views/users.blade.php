@@ -39,15 +39,15 @@
                         <tbody class="bg-[#2f1c37] divide-y divide-[#482b52]">
                             @foreach($users as $user)
                             <tr>
-                                <td class="px-6 py-4 whitespace-no-wrap">{{ $user->name }}</td>
-                                <td class="px-6 py-4 whitespace-no-wrap">{{ $user->email }}</td>
-                                <td class="px-6 py-4 whitespace-no-wrap">{{ $user->birthdate }}</td>
-                                <td class="px-6 py-4 whitespace-no-wrap">{{ $user->cpf }}</td>
-                                <td class="px-6 py-4 whitespace-no-wrap">{{ $user->saldo }}</td>
-                                <td class="px-6 py-4 whitespace-no-wrap">
-                                    <a href="#" onclick="openViewModal(event, {{ $user->id }})" class="text-[#ffca06] hover:opacity-80 mr-3">Ver</a>
-                                    <a href="#" onclick="openEditModal(event, {{ $user->id }})" class="text-[#c91b7a] hover:opacity-80 mr-3">Editar</a>
-                                    <a href="#" onclick="openDeleteModal(event, {{ $user->id }})" class="text-[#e8675c] hover:opacity-80">Excluir</a>
+                                <td class="px-6 py-4 whitespace-no-wrap text-white">{{ $user->name }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-white">{{ $user->email }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-white">{{ $user->birthdate }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-white">{{ $user->cpf }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-white">{{ $user->saldo }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-center">
+                                    <a href="#" onclick="openViewModal(event, {{ $user->id }})" class="text-[#ffca06] hover:opacity-80 mr-3 font-bold">Ver</a>
+                                    <a href="#" onclick="openEditModal(event, {{ $user->id }})" class="text-[#c91b7a] hover:opacity-80 mr-3 font-bold">Editar</a>
+                                    <a href="#" onclick="openDeleteModal(event, {{ $user->id }})" class="text-[#e8675c] hover:opacity-80 font-bold">Excluir</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -93,7 +93,6 @@
         </div>
     </div>
 
-    <!-- Modal Criar Usuário -->
     <div id="createModal" class="hidden fixed inset-0 bg-[#1a0b1e]/60 backdrop-blur-md overflow-y-auto h-full w-full z-50 transition-all duration-300">
         <div class="relative top-20 mx-auto p-5 border border-[#482b52] w-96 shadow-2xl rounded-md bg-[#2f1c37]">
             <div class="flex justify-between items-center mb-4 border-b border-[#482b52] pb-2">
@@ -120,7 +119,7 @@
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-300 text-sm font-bold mb-2">Data de Nascimento</label>
-                    <input type="date" name="birthdate" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white color-white">
+                    <input type="date" name="birthdate" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-300 text-sm font-bold mb-2">CPF</label>
@@ -138,7 +137,6 @@
         </div>
     </div>
 
-    <!-- Modal Ver Usuário -->
     <div id="viewModal" class="hidden fixed inset-0 bg-[#1a0b1e]/60 backdrop-blur-md overflow-y-auto h-full w-full z-50 transition-all duration-300">
         <div class="relative top-20 mx-auto p-5 border border-[#482b52] w-96 shadow-2xl rounded-md bg-[#2f1c37]">
             <div class="flex justify-between items-center mb-4 border-b border-[#482b52] pb-2">
@@ -177,7 +175,6 @@
         </div>
     </div>
 
-    <!-- Modal Editar Usuário -->
     <div id="editModal" class="hidden fixed inset-0 bg-[#1a0b1e]/60 backdrop-blur-md overflow-y-auto h-full w-full z-50 transition-all duration-300">
         <div class="relative top-20 mx-auto p-5 border border-[#482b52] w-96 shadow-2xl rounded-md bg-[#2f1c37]">
             <div class="flex justify-between items-center mb-4 border-b border-[#482b52] pb-2">
@@ -223,7 +220,6 @@
         </div>
     </div>
 
-    <!-- Modal Excluir Usuário -->
     <div id="deleteModal" class="hidden fixed inset-0 bg-[#1a0b1e]/60 backdrop-blur-md overflow-y-auto h-full w-full z-50 transition-all duration-300">
         <div class="relative top-20 mx-auto p-5 border border-[#e8675c]/30 w-96 shadow-2xl rounded-md bg-[#2f1c37]">
             <div class="flex justify-between items-center mb-4 border-b border-[#482b52] pb-2">
@@ -254,7 +250,6 @@
     </div>
 
     <script>
-        // Build a JS map of users present on this page so modals don't need an API endpoint
         const usersData = {};
         @foreach($users as $user)
             usersData[{{ $user->id }}] = {!! json_encode([
@@ -267,7 +262,6 @@
             ]) !!};
         @endforeach
 
-        // Modal Criar
         function openCreateModal(e) {
             e.preventDefault();
             document.getElementById('createModal').classList.remove('hidden');
@@ -278,14 +272,10 @@
             document.getElementById('createForm').reset();
         }
 
-        // Modal Ver (usa dados já carregados na página)
         function openViewModal(e, userId) {
             e.preventDefault();
             const data = usersData[userId];
-            if (!data) {
-                console.error('Usuário não encontrado nos dados da página:', userId);
-                return;
-            }
+            if (!data) return;
             document.getElementById('viewName').value = data.name;
             document.getElementById('viewEmail').value = data.email;
             document.getElementById('viewBirthdate').value = data.birthdate;
@@ -298,21 +288,16 @@
             document.getElementById('viewModal').classList.add('hidden');
         }
 
-        // Modal Editar (usa dados já carregados na página)
         function openEditModal(e, userId) {
             e.preventDefault();
             const data = usersData[userId];
-            if (!data) {
-                console.error('Usuário não encontrado nos dados da página:', userId);
-                return;
-            }
+            if (!data) return;
             document.getElementById('editForm').action = `/users/${userId}`;
             document.getElementById('editName').value = data.name;
             document.getElementById('editEmail').value = data.email;
             document.getElementById('editBirthdate').value = data.birthdate;
             document.getElementById('editCpf').value = data.cpf;
             document.getElementById('editSaldo').value = data.saldo;
-            // Note: file inputs cannot be prefilled for security reasons
             document.getElementById('editModal').classList.remove('hidden');
         }
 
@@ -320,7 +305,6 @@
             document.getElementById('editModal').classList.add('hidden');
         }
 
-        // Modal Excluir
         function openDeleteModal(e, userId) {
             e.preventDefault();
             document.getElementById('deleteModal').classList.remove('hidden');
@@ -331,18 +315,11 @@
             document.getElementById('deleteModal').classList.add('hidden');
         }
 
-        // Fechar modais ao clicar fora
         window.onclick = function(event) {
-            const createModal = document.getElementById('createModal');
-            const viewModal = document.getElementById('viewModal');
-            const editModal = document.getElementById('editModal');
-            const deleteModal = document.getElementById('deleteModal');
-
-            if (event.target === createModal) closeCreateModal();
-            if (event.target === viewModal) closeViewModal();
-            if (event.target === editModal) closeEditModal();
-            if (event.target === deleteModal) closeDeleteModal();
+            if (event.target === document.getElementById('createModal')) closeCreateModal();
+            if (event.target === document.getElementById('viewModal')) closeViewModal();
+            if (event.target === document.getElementById('editModal')) closeEditModal();
+            if (event.target === document.getElementById('deleteModal')) closeDeleteModal();
         }
     </script>
-
 </x-app-layout>
