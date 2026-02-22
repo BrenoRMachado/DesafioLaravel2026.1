@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\PagSeguroController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,17 @@ Route::get('/dashboard', function () {
 Route::get('/dashboardAdmin', function () {
     return view('dashboardAdmin');
 })->middleware(AdminMiddleware::class)->name('dashboardAdmin');
+
+
+Route::middleware('auth')->group(function () {
+ 
+    Route::post('/checkout', [PagSeguroController::class, 'createCheckout'])->name('checkout');
+    
+    
+    Route::get('/erro-pagamento', function () {
+        return "Algo deu errado com o seu pagamento. Por favor, tente novamente.";
+    })->name('pagamento.erro');
+});
 
 Route::get('/produtos/{produto}', [ProdutoController::class, 'show'])->name('produtos.show')->middleware('auth');
 
