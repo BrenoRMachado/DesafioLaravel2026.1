@@ -31,7 +31,7 @@
                     <div class="mt-8">
                         @auth
                             @if(!auth()->user()->is_admin)
-                                <form action="{{ route('checkout') }}" method="POST">
+                                <form action="{{ route('checkout') }}" method="POST" target="_blank">
                                     @csrf
                                     <input type="hidden" name="produto" value="{{ json_encode([
                                         'id' => $produto->id,

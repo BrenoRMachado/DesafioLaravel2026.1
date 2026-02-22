@@ -64,7 +64,7 @@
 
                                     @auth
                                         @if(!auth()->user()->is_admin) 
-                                            <form action="{{ route('checkout') }}" method="POST" class="flex-1">
+                                            <form action="{{ route('checkout') }}" method="POST" class="flex-1" target="_blank">
                                                 @csrf
                                                 <input type="hidden" name="produto" value="{{ json_encode([
                                                     'id' => $produto->id,
