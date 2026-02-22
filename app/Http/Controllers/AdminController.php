@@ -39,21 +39,21 @@ class AdminController extends Controller
         return redirect()->route('admins')->with('success', 'Administrador criado com sucesso!');
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $admin) 
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $admin->id,
             'password' => 'nullable|string|min:8',
             'birthdate' => 'required|date',
-            'cpf' => 'required|string|unique:users,cpf,' . $user->id,
+            'cpf' => 'required|string|unique:users,cpf,' . $admin->id,
             'saldo' => 'required|numeric|min:0',
         ]);
 
-        $user->update([
+        $admin->update([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => isset($data['password']) ? Hash::make($data['password']) : $user->password,
+            'password' => isset($data['password']) ? Hash::make($data['password']) : $admin->password,
             'birthdate' => $data['birthdate'],
             'cpf' => $data['cpf'],
             'saldo' => $data['saldo'],
@@ -62,9 +62,9 @@ class AdminController extends Controller
         return redirect()->route('admins')->with('success', 'Administrador atualizado com sucesso!');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $admin)
     {
-        $user->delete();
+        $admin->delete();
         return redirect()->route('admins')->with('success', 'Administrador deletado com sucesso!');
     }
 }
