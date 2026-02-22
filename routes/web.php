@@ -11,7 +11,9 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/home', [ProdutoController::class, 'index'])->name('home');
+Route::get('/home', [ProdutoController::class, 'index'])
+    ->middleware(['auth']) 
+    ->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
