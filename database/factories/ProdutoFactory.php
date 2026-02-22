@@ -24,7 +24,8 @@ class ProdutoFactory extends Factory
             'descricao' => $this->faker->sentence(),
             'categoria' => $this->faker->randomElement(['Eletrônicos', 'Periféricos', 'Acessórios']),
             'data_criacao' => now(),
-            'usuario_id' => \App\Models\User::all()->random()->id,
+            //'usuario_id' => \App\Models\User::all()->random()->id,
+            'usuario_id' => \App\Models\User::factory(),
         ];
     }
 }
