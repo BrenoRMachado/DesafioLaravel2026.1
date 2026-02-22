@@ -46,8 +46,10 @@
                                 <td class="px-6 py-4 whitespace-no-wrap text-white">{{ $user->saldo }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-center">
                                     <a href="#" onclick="openViewModal(event, {{ $user->id }})" class="text-[#ffca06] hover:opacity-80 mr-3 font-bold">Ver</a>
-                                    <a href="#" onclick="openEditModal(event, {{ $user->id }})" class="text-[#c91b7a] hover:opacity-80 mr-3 font-bold">Editar</a>
-                                    <a href="#" onclick="openDeleteModal(event, {{ $user->id }})" class="text-[#e8675c] hover:opacity-80 font-bold">Excluir</a>
+                                    @if ($user->created_by === auth()->id() || $user->id === auth()->id()) 
+                                        <a href="#" onclick="openEditModal(event, {{ $user->id }})" class="text-[#c91b7a] hover:opacity-80 mr-3 font-bold">Editar</a>
+                                        <a href="#" onclick="openDeleteModal(event, {{ $user->id }})" class="text-[#e8675c] hover:opacity-80 font-bold">Excluir</a>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

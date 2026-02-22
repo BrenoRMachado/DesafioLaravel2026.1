@@ -34,6 +34,7 @@ class AdminController extends Controller
             'cpf' => $data['cpf'],
             'saldo' => $data['saldo'],
             'is_admin' => true,
+            'created_by' => 1,
         ]);
 
         return redirect()->route('admins')->with('success', 'Administrador criado com sucesso!');

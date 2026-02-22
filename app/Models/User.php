@@ -26,6 +26,7 @@ class User extends Authenticatable
         'cpf',
         'saldo',
         'profile_picture',
+        'created_by',
     ];
 
     /**
