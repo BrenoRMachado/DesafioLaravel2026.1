@@ -56,11 +56,20 @@
                                     </p>
                                 </div>
 
-                                <div class="mt-4">
-                                    <a href="#" class="inline-block text-white px-4 py-2 rounded text-sm transition hover:opacity-90" 
-                                    style="background-color: #c91b7a;">
+                                <div class="mt-4 flex gap-2">
+                                    <a href="#" class="flex-1 text-center text-white px-4 py-2 rounded text-sm font-bold transition hover:opacity-90" 
+                                    style="background-color: #68097d;">
                                         Ver Detalhes
                                     </a>
+
+                                    @auth
+                                        @if(!auth()->user()->is_admin) 
+                                            <button class="flex-1 text-white px-4 py-2 rounded text-sm font-bold transition hover:opacity-90" 
+                                                    style="background-color: #c91b7a;">
+                                                Comprar
+                                            </button>
+                                        @endif
+                                    @endauth
                                 </div>
                             </div>
                         @endforeach
