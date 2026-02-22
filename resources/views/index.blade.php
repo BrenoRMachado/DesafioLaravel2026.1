@@ -47,7 +47,9 @@
                                 <div>
                                     <h4 class="text-lg font-semibold text-white">{{ $produto->nome }}</h4>
                                     
-                                    <p class="text-white text-sm mb-2">{{ Str::limit($produto->descricao, 50) }}</p>
+                                    <p class="text-white text-sm mb-2 truncate" title="{{ $produto->descricao }}">
+                                        {{ $produto->descricao }}
+                                    </p>
                                     
                                     <p class="font-bold text-xl" style="color: #ffcb06;">
                                         R$ {{ number_format($produto->preco, 2, ',', '.') }}
