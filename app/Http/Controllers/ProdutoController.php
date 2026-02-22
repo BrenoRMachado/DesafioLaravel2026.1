@@ -7,10 +7,25 @@ use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $produtos = Produto::all();
+        $search = $request->input('search');
+        $categoriaSelecionada = $request->input('categoria');
+        
+        $categorias = Produto::select('categoria')->distinct()->pluck('categoria');
 
-        return view('index', compact('produtos'));
+        $produtos = Produto::query()
+            ->where('usuario_id', '!=', auth()->id())
+            
+            ->when($search, function ($query, $search) {
+                return $query->where('nome', 'like', "%{$search}%");
+            })
+            ->when($categoriaSelecionada, function ($query, $categoriaSelecionada) {
+                return $query->where('categoria', $categoriaSelecionada);
+            })
+            ->paginate(9)
+            ->withQueryString();
+
+        return view('index', compact('produtos', 'categorias'));
     }
 }
