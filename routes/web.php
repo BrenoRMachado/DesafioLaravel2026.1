@@ -23,6 +23,8 @@ Route::get('/dashboardAdmin', function () {
     return view('dashboardAdmin');
 })->middleware(AdminMiddleware::class)->name('dashboardAdmin');
 
+Route::get('/produtos/{produto}', [ProdutoController::class, 'show'])->name('produtos.show')->middleware('auth');
+
 Route::get('/users', [UserController::class, 'index'])->middleware(AdminMiddleware::class)->name('users');
 Route::post('/users', [UserController::class, 'store'])->middleware(AdminMiddleware::class)->name('users.store');
 Route::put('/users/{user}', [UserController::class, 'update'])->middleware(AdminMiddleware::class)->name('users.update');
