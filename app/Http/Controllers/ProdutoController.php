@@ -11,10 +11,12 @@ class ProdutoController extends Controller
     {
         $search = $request->input('search');
         $categoriaSelecionada = $request->input('categoria');
-
+        
         $categorias = Produto::select('categoria')->distinct()->pluck('categoria');
 
         $produtos = Produto::query()
+            ->where('usuario_id', '!=', auth()->id())
+            
             ->when($search, function ($query, $search) {
                 return $query->where('nome', 'like', "%{$search}%");
             })
