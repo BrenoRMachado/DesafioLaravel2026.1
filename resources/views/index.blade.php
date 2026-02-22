@@ -5,8 +5,27 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+<div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="overflow-hidden shadow-sm sm:rounded-lg mb-6" style="background-color: #2f1c37;">
+                <div class="p-6">
+                    <form action="{{ route('home') }}" method="GET">
+                        <div class="flex gap-2">
+                            <input 
+                                type="text" 
+                                name="search" 
+                                placeholder="O que você está procurando?" 
+                                value="{{ request('search') }}"
+                                class="w-full rounded-lg border-[#482b52] bg-[#482b52] text-white focus:border-[#e7675c] focus:ring-[#e7675c] placeholder-gray-300 focus:placeholder-transparent transition-all duration-300 pl-6"
+                            >
+                            <button type="submit" class="px-8 py-2 rounded-lg text-white font-bold transition hover:opacity-90" style="background-color: #e7675c;">
+                                Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="overflow-hidden shadow-sm sm:rounded-lg" style="background-color: #2f1c37;">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-lg font-bold mb-4">Confira nossas ofertas!</h3>
