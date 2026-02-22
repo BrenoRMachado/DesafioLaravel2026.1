@@ -10,15 +10,26 @@
             <div class="overflow-hidden shadow-sm sm:rounded-lg mb-6" style="background-color: #2f1c37;">
                 <div class="p-6">
                     <form action="{{ route('home') }}" method="GET">
-                        <div class="flex gap-2">
+                        <div class="flex flex-col md:flex-row gap-3 items-stretch">
                             <input 
                                 type="text" 
                                 name="search" 
                                 placeholder="O que você está procurando?" 
                                 value="{{ request('search') }}"
-                                class="w-full rounded-lg border-[#482b52] bg-[#482b52] text-white focus:border-[#e7675c] focus:ring-[#e7675c] placeholder-gray-300 focus:placeholder-transparent transition-all duration-300 pl-6"
+                                class="flex-grow h-11 rounded-lg border-[#482b52] bg-[#482b52] text-white focus:border-[#e7675c] focus:ring-[#e7675c] placeholder-gray-300 focus:placeholder-transparent transition-all duration-300 pl-6"
                             >
-                            <button type="submit" class="px-8 py-2 rounded-lg text-white font-bold transition hover:opacity-90" style="background-color: #e7675c;">
+                            <select 
+                                name="categoria" 
+                                class="w-full md:w-auto h-11 rounded-lg border-[#482b52] bg-[#482b52] text-white focus:border-[#e7675c] focus:ring-[#e7675c] cursor-pointer"
+                            >
+                                <option value="">Todas as Categorias</option>
+                                @foreach($categorias as $cat)
+                                    <option value="{{ $cat }}" {{ request('categoria') == $cat ? 'selected' : '' }}>
+                                        {{ ucfirst($cat) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="w-full md:w-auto h-11 px-8 rounded-lg text-white font-bold transition hover:opacity-90 flex items-center justify-center" style="background-color: #e7675c;">
                                 Buscar
                             </button>
                         </div>
@@ -57,29 +68,29 @@
                     </div>
                         <style>
                             .pagination-custom nav div:first-child {
-                                display: none !important;
+                                display: none;
                             }
 
                             .pagination-custom nav div:last-child {
-                                display: flex !important;
-                                justify-content: center !important;
-                                width: 100% !important;
+                                display: flex;
+                                justify-content: center;
+                                width: 100%;
                             }
 
                             .pagination-custom span, .pagination-custom a {
-                                background-color: #472652 !important; 
-                                border-color: #4c2e57 !important; 
-                                color: white !important;
+                                background-color: #472652; 
+                                border-color: #4c2e57; 
+                                color: white;
                             }
 
                             .pagination-custom span[aria-current="page"] span {
-                                background-color: #e7675c !important;
-                                color: white !important;
-                                border-color: #e7675c !important;
+                                background-color: #e7675c;
+                                color: white;
+                                border-color: #e7675c;
                             }
 
                             .pagination-custom a:hover {
-                                background-color: #4c2e57 !important;
+                                background-color: #4c2e57;
                             }
                         </style>
                 </div>
