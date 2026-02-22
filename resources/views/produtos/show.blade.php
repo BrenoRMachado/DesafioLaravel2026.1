@@ -4,7 +4,7 @@
             <div class="bg-[#2f1c37] overflow-hidden shadow-sm sm:rounded-lg p-8 flex flex-col md:flex-row gap-8">
                 
                 <div class="w-full md:w-1/2 bg-[#482b52] rounded-xl flex items-center justify-center h-96">
-                    <span class="text-white font-medium">Espaço para Imagem do Produto</span>
+                    <img class="w-full h-full object-contain" src="{{ '/storage/' . $produto->foto }}" alt="foto"/>
                 </div>
 
                 <div class="w-full md:w-1/2 flex flex-col justify-between">
