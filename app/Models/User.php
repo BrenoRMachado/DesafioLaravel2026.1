@@ -57,4 +57,9 @@ class User extends Authenticatable
         return $this->hasMany(Produto::class, 'usuario_id');
     }
 
+    public function endereco()
+    {
+        return $this->hasOne(Endereco::class, 'usuario_id');
+    }
+
 }

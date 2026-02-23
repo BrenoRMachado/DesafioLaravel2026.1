@@ -94,7 +94,7 @@
     </div>
 
     <div id="createModal" class="hidden fixed inset-0 bg-[#1a0b1e]/60 backdrop-blur-md overflow-y-auto h-full w-full z-50 transition-all duration-300">
-        <div class="relative top-20 mx-auto p-5 border border-[#482b52] w-96 shadow-2xl rounded-md bg-[#2f1c37]">
+        <div class="relative top-20 mx-auto p-6 border border-[#482b52] w-11/12 md:w-1/2 shadow-2xl rounded-md bg-[#2f1c37]">
             <div class="flex justify-between items-center mb-4 border-b border-[#482b52] pb-2">
                 <h3 class="text-lg font-bold text-white">Criar Novo Usuário</h3>
                 <button onclick="closeCreateModal()" class="text-gray-400 hover:text-white transition">
@@ -103,32 +103,85 @@
                     </svg>
                 </button>
             </div>
-            <form id="createForm" action="/users" method="POST">
+            <form id="createForm" action="/users" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Nome</label>
-                    <input type="text" name="name" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Nome</label>
+                        <input type="text" name="name" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Email</label>
+                        <input type="email" name="email" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Senha</label>
+                        <input type="password" name="password" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Data de Nascimento</label>
+                        <input type="date" name="birthdate" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">CPF</label>
+                        <input type="text" name="cpf" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Saldo</label>
+                        <input type="number" name="saldo" step="0.01" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div class="col-span-2">
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Foto de Perfil</label>
+                        <input type="file" name="profile_picture" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#482b52] file:text-white hover:file:bg-[#5a3666] cursor-pointer">
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Email</label>
-                    <input type="email" name="email" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+
+                <div class="mt-4 pt-4 border-t border-[#482b52]">
+                    <h4 class="text-sm text-gray-300 mb-3 font-bold">Endereço</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">CEP</label>
+                            <input type="text" name="cep" id="createCep" required onfocusout="checkCep(this.value)" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Número</label>
+                            <input type="text" name="numero" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Logradouro</label>
+                            <input type="text" name="logradouro" id="createStreet" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Bairro</label>
+                            <input type="text" name="bairro" id="createNeighborhood" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Cidade</label>
+                            <input type="text" name="cidade" id="createCity" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Estado</label>
+                            <input type="text" name="estado" id="createState" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Complemento</label>
+                            <input type="text" name="complemento" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Senha</label>
-                    <input type="password" name="password" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Data de Nascimento</label>
-                    <input type="date" name="birthdate" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">CPF</label>
-                    <input type="text" name="cpf" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Saldo</label>
-                    <input type="number" name="saldo" step="0.01" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
-                </div>
+
                 <div class="flex justify-end gap-3 pt-4">
                     <button type="button" onclick="closeCreateModal()" class="px-4 py-2 text-white bg-[#482b52] rounded-md hover:bg-[#5a3666] transition">Cancelar</button>
                     <button type="submit" class="px-4 py-2 bg-[#c91b7a] text-white font-bold rounded-md hover:bg-[#a11562] transition shadow-lg">Salvar</button>
@@ -138,7 +191,7 @@
     </div>
 
     <div id="viewModal" class="hidden fixed inset-0 bg-[#1a0b1e]/60 backdrop-blur-md overflow-y-auto h-full w-full z-50 transition-all duration-300">
-        <div class="relative top-20 mx-auto p-5 border border-[#482b52] w-96 shadow-2xl rounded-md bg-[#2f1c37]">
+        <div class="relative top-20 mx-auto p-6 border border-[#482b52] w-11/12 md:w-1/2 shadow-2xl rounded-md bg-[#2f1c37]">
             <div class="flex justify-between items-center mb-4 border-b border-[#482b52] pb-2">
                 <h3 class="text-lg font-bold text-white">Detalhes do Usuário</h3>
                 <button onclick="closeViewModal()" class="text-gray-400 hover:text-white transition">
@@ -147,28 +200,73 @@
                     </svg>
                 </button>
             </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-gray-400 text-xs font-bold mb-1 uppercase">Nome</label>
-                    <input type="text" id="viewName" readonly class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-gray-300 cursor-not-allowed">
+            <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Nome</label>
+                        <input id="viewName" type="text" name="name" readonly required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Email</label>
+                        <input id="viewEmail" type="email" name="email" readonly required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Data de Nascimento</label>
+                        <input id="viewBirthdate" type="date" name="birthdate" readonly required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">CPF</label>
+                        <input id="viewCpf" type="text" name="cpf" readonly required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Saldo</label>
+                        <input id="viewSaldo" type="number" name="saldo" readonly step="0.01" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white font-mono text-yellow-400">
+                    </div>
+                    
                 </div>
-                <div>
-                    <label class="block text-gray-400 text-xs font-bold mb-1 uppercase">Email</label>
-                    <input type="email" id="viewEmail" readonly class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-gray-300 cursor-not-allowed">
+
+                <div class="mt-4 pt-4 border-t border-[#482b52]">
+                    <h4 class="text-sm text-gray-300 mb-3 font-bold">Endereço</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">CEP</label>
+                            <input id="viewCep" type="text" name="cep" readonly required  value="{{ $user->endereco->cep ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Número</label>
+                            <input id="viewNumero" type="text" name="numero" readonly value="{{ $user->endereco->numero ?? '' }}"  class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Logradouro</label>
+                            <input id="viewStreet" type="text" name="logradouro" readonly value="{{ $user->endereco->logradouro ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Bairro</label>
+                            <input id="viewNeighborhood" type="text" name="bairro" readonly value="{{ $user->endereco->bairro ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Cidade</label>
+                            <input id="viewCity" type="text" name="cidade"  readonly value="{{ $user->endereco->cidade ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Estado</label>
+                            <input id="viewState" type="text" name="estado"  readonly value="{{ $user->endereco->estado ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Complemento</label>
+                            <input id="viewComplemento" type="text" name="complemento"  readonly value="{{ $user->endereco->complemento ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-gray-400 text-xs font-bold mb-1 uppercase">Data de Nascimento</label>
-                    <input type="date" id="viewBirthdate" readonly class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-gray-300 cursor-not-allowed">
-                </div>
-                <div>
-                    <label class="block text-gray-400 text-xs font-bold mb-1 uppercase">CPF</label>
-                    <input type="text" id="viewCpf" readonly class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-gray-300 cursor-not-allowed">
-                </div>
-                <div>
-                    <label class="block text-gray-400 text-xs font-bold mb-1 uppercase">Saldo</label>
-                    <input type="number" id="viewSaldo" step="0.01" readonly class="w-full px-3 py-2 bg-[#1a0b1e]/50 border border-[#482b52] rounded-md text-gray-300 cursor-not-allowed font-mono text-yellow-400">
-                </div>
-            </div>
             <div class="flex justify-end mt-6">
                 <button type="button" onclick="closeViewModal()" class="px-6 py-2 text-white bg-[#482b52] rounded-md hover:bg-[#5a3666] transition font-bold">Fechar</button>
             </div>
@@ -176,7 +274,7 @@
     </div>
 
     <div id="editModal" class="hidden fixed inset-0 bg-[#1a0b1e]/60 backdrop-blur-md overflow-y-auto h-full w-full z-50 transition-all duration-300">
-        <div class="relative top-20 mx-auto p-5 border border-[#482b52] w-96 shadow-2xl rounded-md bg-[#2f1c37]">
+        <div class="relative top-20 mx-auto p-6 border border-[#482b52] w-11/12 md:w-1/2 shadow-2xl rounded-md bg-[#2f1c37]">
             <div class="flex justify-between items-center mb-4 border-b border-[#482b52] pb-2">
                 <h3 class="text-lg font-bold text-white">Editar Usuário</h3>
                 <button onclick="closeEditModal()" class="text-gray-400 hover:text-white transition">
@@ -188,30 +286,78 @@
             <form id="editForm" action="/users" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Nome</label>
-                    <input type="text" name="name" id="editName" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Nome</label>
+                        <input type="text" name="name" id="editName" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Email</label>
+                        <input type="email" name="email" id="editEmail" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Data de Nascimento</label>
+                        <input type="date" name="birthdate" id="editBirthdate" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">CPF</label>
+                        <input type="text" name="cpf" id="editCpf" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Saldo</label>
+                        <input type="number" name="saldo" id="editSaldo" step="0.01" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white font-mono text-yellow-400">
+                    </div>
+
+                    <div class="col-span-2">
+                        <label class="block text-gray-300 text-sm font-bold mb-2">Foto de Perfil</label>
+                        <input type="file" name="profile_picture" id="editProfilePicture" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#482b52] file:text-white hover:file:bg-[#5a3666] cursor-pointer">
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Email</label>
-                    <input type="email" name="email" id="editEmail" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+
+                <div class="mt-4 pt-4 border-t border-[#482b52]">
+                    <h4 class="text-sm text-gray-300 mb-3 font-bold">Endereço</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">CEP</label>
+                            <input type="text" name="cep" id="editCep" required onfocusout="checkCep(this.value)" value="{{ $user->endereco->cep ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Número</label>
+                            <input type="text" name="numero" id="editNumero" value="{{ $user->endereco->numero ?? '' }}"  class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Logradouro</label>
+                            <input type="text" name="logradouro" id="editStreet" value="{{ $user->endereco->logradouro ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Bairro</label>
+                            <input type="text" name="bairro" id="editNeighborhood" value="{{ $user->endereco->bairro ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Cidade</label>
+                            <input type="text" name="cidade" id="editCity" value="{{ $user->endereco->cidade ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Estado</label>
+                            <input type="text" name="estado" id="editState" value="{{ $user->endereco->estado ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label class="block text-gray-300 text-sm font-bold mb-2">Complemento</label>
+                            <input type="text" name="complemento" id="editComplemento" value="{{ $user->endereco->complemento ?? '' }}" class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Data de Nascimento</label>
-                    <input type="date" name="birthdate" id="editBirthdate" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">CPF</label>
-                    <input type="text" name="cpf" id="editCpf" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Saldo</label>
-                    <input type="number" name="saldo" id="editSaldo" step="0.01" required class="w-full px-3 py-2 bg-[#1a0b1e] border border-[#482b52] rounded-md focus:outline-none focus:border-[#c91b7a] text-white font-mono text-yellow-400">
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-300 text-sm font-bold mb-2">Foto de Perfil</label>
-                    <input type="file" name="profile_picture" id="editProfilePicture" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#482b52] file:text-white hover:file:bg-[#5a3666] cursor-pointer">
-                </div>
+
                 <div class="flex justify-end gap-3 pt-2">
                     <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-white bg-[#482b52] rounded-md hover:bg-[#5a3666] transition">Cancelar</button>
                     <button type="submit" class="px-4 py-2 bg-[#c91b7a] text-white font-bold rounded-md hover:bg-[#a11562] transition shadow-lg">Atualizar</button>
@@ -313,6 +459,30 @@
 
         function closeDeleteModal() {
             document.getElementById('deleteModal').classList.add('hidden');
+        }
+
+        function checkCep(cep) {
+            if (!cep) return;
+            fetch(`/api/cep/${cep}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.erro) {
+                        alert("CEP inválido!");
+                    } else {
+                        const editStreet = document.getElementById('editStreet'); if (editStreet) editStreet.value = data.logradouro || '';
+                        const editNeighborhood = document.getElementById('editNeighborhood'); if (editNeighborhood) editNeighborhood.value = data.bairro || '';
+                        const editCity = document.getElementById('editCity'); if (editCity) editCity.value = data.localidade || '';
+                        const editState = document.getElementById('editState'); if (editState) editState.value = data.uf || '';
+
+                        const createStreet = document.getElementById('createStreet'); if (createStreet) createStreet.value = data.logradouro || '';
+                        const createNeighborhood = document.getElementById('createNeighborhood'); if (createNeighborhood) createNeighborhood.value = data.bairro || '';
+                        const createCity = document.getElementById('createCity'); if (createCity) createCity.value = data.localidade || '';
+                        const createState = document.getElementById('createState'); if (createState) createState.value = data.uf || '';
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao verificar CEP:", error);
+                });
         }
 
         window.onclick = function(event) {
