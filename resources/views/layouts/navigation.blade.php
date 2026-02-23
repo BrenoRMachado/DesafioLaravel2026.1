@@ -12,6 +12,16 @@
                     <a href="{{ route('home') }}" class="text-sm leading-4 font-medium text-white hover:text-gray-300 transition duration-150 ease-in-out">
                         Home
                     </a>
+                    @if(Auth::user()->is_admin)
+                        <a href="{{ route('dashboardAdmin') }}" class="text-sm leading-4 font-medium text-white hover:text-gray-300 transition duration-150 ease-in-out">
+                            Dashboard
+                        </a>
+                    @else
+                        <a href="{{ route('dashboard') }}" class="text-sm leading-4 font-medium text-white hover:text-gray-300 transition duration-150 ease-in-out">
+                            Dashboard
+                        </a>
+                    @endif
+
                 </div>
             </div>
 
@@ -59,6 +69,15 @@
 
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+            @if(Auth::user()->is_admin)
+                <x-responsive-nav-link :href="route('dashboardAdmin')" :active="request()->routeIs('dashboardAdmin')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            @endif
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home') }}
             </x-responsive-nav-link>

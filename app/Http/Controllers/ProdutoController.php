@@ -25,7 +25,6 @@ class ProdutoController extends Controller
             ->paginate(9)
             ->withQueryString();
 
-        // Dados para gráfico de produtos por mês (últimos 12 meses)
         $chartData = $this->getProductsChartData();
 
         if ($request->is('produtos*')) {
@@ -40,7 +39,6 @@ class ProdutoController extends Controller
         $meses = [];
         $dados = [];
 
-        // Últimos 12 meses
         for ($i = 11; $i >= 0; $i--) {
             $data = now()->subMonths($i);
             $meses[] = $data->format('M/Y');
