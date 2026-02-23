@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Endereco;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,9 +24,17 @@ class UserController extends Controller
             'birthdate' => 'required|date',
             'cpf' => 'required|string|unique:users,cpf',
             'saldo' => 'required|numeric|min:0',
+            'cep' => 'required|string',
+            'numero' => 'required|string',
+            'complemento' => 'nullable|string',
+            'logradouro' => 'nullable|string',
+            'bairro' => 'nullable|string',
+            'cidade' => 'nullable|string',
+            'estado' => 'nullable|string',
         ]);
 
-        User::create([
+    
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -33,6 +42,17 @@ class UserController extends Controller
             'cpf' => $data['cpf'],
             'saldo' => $data['saldo'],
             'is_admin' => false,
+        ]);
+
+        Endereco::create([
+            'usuario_id' => $user->id,
+            'cep' => $data['cep'],
+            'logradouro' => $data['logradouro'],
+            'bairro' => $data['bairro'],
+            'cidade' => $data['cidade'],
+            'estado' => $data['estado'],
+            'numero' => $data['numero'],
+            'complemento' => $data['complemento'],
         ]);
 
         return redirect()->route('users')->with('success', 'Usuário criado com sucesso!');
@@ -47,6 +67,13 @@ class UserController extends Controller
             'birthdate' => 'required|date',
             'cpf' => 'required|string|unique:users,cpf,' . $user->id,
             'saldo' => 'required|numeric|min:0',
+            'cep' => 'required|string',
+            'numero' => 'required|string',
+            'complemento' => 'nullable|string',
+            'logradouro' => 'nullable|string',
+            'bairro' => 'nullable|string',
+            'cidade' => 'nullable|string',
+            'estado' => 'nullable|string',
         ]);
 
         $user->update([
@@ -57,6 +84,19 @@ class UserController extends Controller
             'cpf' => $data['cpf'],
             'saldo' => $data['saldo'],
         ]);
+
+        $user->endereco()->updateOrCreate(
+            ['usuario_id' => $user->id],
+            [
+                'cep' => $data['cep'],
+                'logradouro' => $data['logradouro'],
+                'bairro' => $data['bairro'],
+                'cidade' => $data['cidade'],
+                'estado' => $data['estado'],
+                'numero' => $data['numero'],
+                'complemento' => $data['complemento'],
+            ]
+        );
 
         return redirect()->route('users')->with('success', 'Usuário atualizado com sucesso!');
     }
