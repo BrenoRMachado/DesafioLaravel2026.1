@@ -25,11 +25,37 @@ class ProdutoController extends Controller
             ->paginate(9)
             ->withQueryString();
 
+        // Dados para gráfico de produtos por mês (últimos 12 meses)
+        $chartData = $this->getProductsChartData();
+
         if ($request->is('produtos*')) {
-            return view('produtos', compact('produtos', 'categorias'));
+            return view('produtos', compact('produtos', 'categorias', 'chartData'));
         }
 
-        return view('index', compact('produtos', 'categorias'));
+        return view('index', compact('produtos', 'categorias', 'chartData'));
+    }
+
+    private function getProductsChartData()
+    {
+        $meses = [];
+        $dados = [];
+
+        // Últimos 12 meses
+        for ($i = 11; $i >= 0; $i--) {
+            $data = now()->subMonths($i);
+            $meses[] = $data->format('M/Y');
+            
+            $quantidade = Produto::whereYear('data_criacao', $data->year)
+                ->whereMonth('data_criacao', $data->month)
+                ->count();
+            
+            $dados[] = $quantidade;
+        }
+
+        return [
+            'meses' => json_encode($meses),
+            'dados' => json_encode($dados),
+        ];
     }
 
     public function store(Request $request)

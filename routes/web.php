@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\PagSeguroController;
+use App\Http\Controllers\OrderController; 
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,8 @@ Route::middleware('auth')->group(function () {
  
     Route::post('/checkout', [PagSeguroController::class, 'createCheckout'])->name('checkout');
     
+    Route::get('/meus-pedidos', [OrderController::class, 'compras'])->name('orders.compras');
+    Route::get('/minhas-vendas', [OrderController::class, 'vendas'])->name('orders.vendas');
     
     Route::get('/erro-pagamento', function () {
         return "Algo deu errado com o seu pagamento. Por favor, tente novamente.";

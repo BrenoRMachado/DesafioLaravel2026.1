@@ -74,6 +74,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="mt-8 bg-[#2f1c37] overflow-hidden shadow-sm sm:rounded-lg border border-[#482b52]">
+                <div class="p-6">
+                    <h2 class="text-xl font-semibold text-white mb-6">Produtos Cadastrados por Mês</h2>
+                    <div style="position: relative; height: 400px;">
+                        <canvas id="produtosChart"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -209,6 +218,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const produtosData = {};
         @foreach($produtos as $produto)
@@ -221,6 +231,61 @@
                 'vendedor' => $produto->vendedor->name ?? 'Desconhecido',
             ]) !!};
         @endforeach
+
+        // Gráfico de produtos por mês
+        const ctx = document.getElementById('produtosChart').getContext('2d');
+        const meses = {!! $chartData['meses'] !!};
+        const dados = {!! $chartData['dados'] !!};
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Produtos Cadastrados',
+                    data: dados,
+                    backgroundColor: '#c91b7a',
+                    borderColor: '#e8675c',
+                    borderWidth: 2,
+                    borderRadius: 4,
+                    hoverBackgroundColor: '#e8675c',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff',
+                            font: { size: 12, weight: 'bold' }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#ffffff',
+                            stepSize: 1
+                        },
+                        grid: {
+                            color: '#482b52',
+                            drawBorder: true
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#ffffff',
+                        },
+                        grid: {
+                            color: '#482b52',
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
 
         function openCreateModal(e) { e.preventDefault(); document.getElementById('createModal').classList.remove('hidden'); }
         function closeCreateModal() { document.getElementById('createModal').classList.add('hidden'); document.getElementById('createForm').reset(); }
