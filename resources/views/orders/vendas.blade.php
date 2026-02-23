@@ -47,6 +47,20 @@
         </div>
     </div>
 
+    <!-- Seção do Gráfico -->
+    <div class="mt-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-[#2f1c37] overflow-hidden shadow-sm sm:rounded-lg border border-[#482b52]">
+                <div class="p-6">
+                    <h2 class="text-2xl font-semibold text-white mb-6">Vendas por Mês</h2>
+                    <div style="position: relative; height: 400px;">
+                        <canvas id="vendasChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="orderViewModal" class="hidden fixed inset-0 bg-[#1a0b1e]/60 backdrop-blur-md overflow-y-auto h-full w-full z-50 transition-all duration-300">
         <div class="relative top-20 mx-auto p-6 border border-[#482b52] w-11/12 md:w-1/2 shadow-2xl rounded-md bg-[#2f1c37]">
             <div class="flex justify-between items-center mb-4 border-b border-[#482b52] pb-2">
@@ -101,7 +115,83 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        @if(isset($chartData) && $chartData)
+            const meses = {!! $chartData['meses'] ?? '[]' !!};
+            const dados = {!! $chartData['dados'] ?? '[]' !!};
+        @else
+            const meses = [];
+            const dados = [];
+        @endif
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvasElement = document.getElementById('vendasChart');
+            if (canvasElement && meses.length > 0 && dados.length > 0) {
+                try {
+                    const ctx = canvasElement.getContext('2d');
+
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: meses,
+                            datasets: [{
+                                label: 'Quantidade de Vendas',
+                                data: dados,
+                                borderColor: '#c91b7a',
+                                backgroundColor: 'rgba(201, 27, 122, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 6,
+                                pointBackgroundColor: '#c91b7a',
+                                pointBorderColor: '#e8675c',
+                                pointBorderWidth: 2,
+                                pointHoverRadius: 8,
+                                pointHoverBackgroundColor: '#e8675c'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: '#ffffff',
+                                        font: { size: 12, weight: 'bold' }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        color: '#ffffff',
+                                        stepSize: 1
+                                    },
+                                    grid: {
+                                        color: '#482b52',
+                                        drawBorder: true
+                                    }
+                                },
+                                x: {
+                                    ticks: {
+                                        color: '#ffffff',
+                                    },
+                                    grid: {
+                                        color: '#482b52',
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                } catch (e) {
+                    console.error('Erro ao renderizar gráfico:', e);
+                }
+            }
+        });
+
         const ordersData = {};
         @foreach($vendas as $venda)
             ordersData[{{ $venda->id }}] = {
